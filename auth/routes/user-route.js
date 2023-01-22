@@ -24,41 +24,54 @@ mongoose.connect(
     
 });
 
-/**
- * @swagger
- * components:
- *  Schemas:
- *   Register:
- *      type: object
- *      required: 
-    *       - firstName
-            - lastName 
-            - email
-            - password
-            - confirmPassword
-            - role
-          properties:
-            firstName:
-               type: string
-               description: The User's firstname
-            lastName:
-               type: string
-               description: The User's lastname
-            email:
-               type: string
-               description: The User's email address 
-            password:
-               type: string
-               description: The User's password 
-            confirmPassword:
-               type: string
-               description: The User's password again
-            role:
-               type: string
-               description: The User's role
-             
- */
 
+/**
+ * @openapi
+ * '/users/register':
+ *  post:
+ *     tags:
+ *     - User
+ *     summary: Create an account
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *            type: object
+ *            required:
+ *              - firstName
+ *              - lastName
+ *              - email
+ *              - password
+ *              - confirmPassword
+ *              - role
+ *            properties:
+ *              firstName: 
+ *                type: string
+ *                default: User's first name
+ *              lastName:
+ *                type: string
+ *                default: User's last name
+ *              email:
+ *                type: string
+ *                default: User's email address
+ *              password:
+ *                type: string
+ *                default: User's password
+ *              confirmPassword: 
+ *                type: string
+ *                default: User's password again
+ *              role:
+ *                type: string
+ *                default: User's role
+ *     responses:
+ *      201:
+ *        description: Created
+ *      409:
+ *        description: Conflict
+ *      404:
+ *        description: Not Found
+ */
 router.post('/register', async (req, res) => {
 
     
@@ -99,7 +112,37 @@ router.post('/register', async (req, res) => {
   }
 })
 
-
+/**
+ * @openapi
+ * '/users/login':
+ *  post:
+ *     tags:
+ *     - User
+ *     summary: Login
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *            type: object
+ *            required:
+ *              - email
+ *              - password
+ *            properties:
+ *              email:
+ *                type: string
+ *                default: User's email address
+ *              password:
+ *                type: string
+ *                default: User's password
+ *     responses:
+ *      201:
+ *        description: Created
+ *      409:
+ *        description: Conflict
+ *      404:
+ *        description: Not Found
+ */
 router.post('/login', async (req, res) => {
 
     
@@ -121,6 +164,36 @@ router.post('/login', async (req, res) => {
 
  
 })
+/**
+ * @openapi
+ * '/users/updateUser/email':
+ *  post:
+ *     tags:
+ *     - User
+ *     summary: Create an account
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *            type: object
+ *            required:
+ *              - password
+ *              - confirmPassword
+ *            properties:
+ *              password:
+ *                type: string
+ *                default: User's password
+ *              confirmPassword: 
+ *                type: string
+ *                default: User's password again
+ *      201:
+ *        description: Created
+ *      409:
+ *        description: Conflict
+ *      404:
+ *        description: Not Found
+ */
 router.post('/updateUser', (req, res) => {
     User.findOneAndUpdate({ "email": req.body.email }, {
         $set: {
@@ -135,6 +208,45 @@ router.post('/updateUser', (req, res) => {
         }
     })
 })
+/**
+ * @openapi
+ * '/users/addMessage':
+ *  post:
+ *     tags:
+ *     - User
+ *     summary: Create an account
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *            type: object
+ *            required:
+ *              - firstName
+ *              - lastName
+ *              - subject
+ *              - message
+ *            properties:
+ *              firstName: 
+ *                type: string
+ *                default: User's first name
+ *              lastName:
+ *                type: string
+ *                default: User's last name
+ *              subject:
+ *                type: string
+ *                default: User's subject address
+ *              message:
+ *                type: string
+ *                default: User's message
+ *     responses:
+ *      201:
+ *        description: Created
+ *      409:
+ *        description: Conflict
+ *      404:
+ *        description: Not Found
+ */
 
 router.post('/addMessage', (req, res) => {
     Message.create(req.body, (err, result) => {
@@ -145,6 +257,63 @@ router.post('/addMessage', (req, res) => {
         }
     })
 })
+
+/**
+ * @openapi
+ * '/users/addVolunteer':
+ *  post:
+ *     tags:
+ *     - User
+ *     summary: Create an account
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *            type: object
+ *            required:
+ *              - firstName
+ *              - lastName
+ *              - phoneNumber
+ *              - email
+ *              - address
+ *              - gender
+ *              - postalCode
+ *              - reason
+ *            properties:
+ *              firstName: 
+ *                type: string
+ *                default: User's first name
+ *              lastName:
+ *                type: string
+ *                default: User's last name
+ *              phoneNumber:
+ *                type: string
+ *                default: User's phone number
+ *              email:
+ *                type: string
+ *                default: User's email address
+ *              address:
+ *                type: string
+ *                default: User's password
+ *              gender: 
+ *                type: string
+ *                default: User's gender
+*              postalCode: 
+ *                type: string
+ *                default: User's Postal code
+ *              reason:
+ *                type: string
+ *                default: User's reason
+ *     responses:
+ *      201:
+ *        description: Created
+ *      409:
+ *        description: Conflict
+ *      404:
+ *        description: Not Found
+ */
+
 router.post('/addVolunteer', (req, res) => {
     Volunteer.create(req.body, (err, result) => {
         if (err) {
@@ -155,6 +324,19 @@ router.post('/addVolunteer', (req, res) => {
     })
 })
 
+
+/**
+ * @openapi
+ * users/findAllUsers:
+ *  get:
+ *     summary: Find all users
+ *     tags:
+ *     - User
+ *     description: Returns all Users
+ *     responses:
+ *       200:
+ *         description: API is  running
+ */
 router.get('/findAllUsers', (req, res) => {
     User.find({}, (err, records) => {
         if (err) {
@@ -164,6 +346,26 @@ router.get('/findAllUsers', (req, res) => {
         }
     })
 })
+/**
+ * @openapi
+ * '/api/deleteUser/{email}':
+ *  delete:
+ *     tags:
+ *     - User
+ *     summary: Remove User by email
+ *     parameters:
+ *      - name: id
+ *        in: path
+ *        description: The unique email of the User
+ *        required: true
+ *     responses:
+ *      200:
+ *        description: Removed
+ *      400:
+ *        description: Bad request
+ *      404:
+ *        description: Not Found
+ */
 router.post('/deleteUser', (req, res) => {
     User.findOneAndDelete({ "email": req.body.email}, (err, result) => {
         if (err) {
