@@ -33,12 +33,6 @@ const Storage  = multer.diskStorage({
         cb(null, file.originalname);
     },
 })
-// const Storage = new CloudinaryStorage({
-//     cloudinary: cloudinary,
-//     params: {
-//       folder: "uploads",
-//     },
-//   });
 
 
 const upload = multer({
@@ -48,6 +42,58 @@ const upload = multer({
 router.get('/', (req, res) => {
     res.send("it works lol.")
 })
+
+/**
+ * @openapi
+ * '/ngo/upload':
+ *  post:
+ *     tags:
+ *     - NGO
+ *     summary: NGO Details
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *            type: object
+ *            required:
+ *              - name
+ *              - category
+ *              - tag
+ *              - image
+ *              - mission
+ *              - email
+ *              - phonenumber
+ *            properties:
+ *              name: 
+ *                type: string
+ *                default: NGO's first name
+ *              category:
+ *                type: string
+ *                default: NGO's last name
+ *              tag:
+ *                type: string
+ *                default: NGO's tag address
+ *              image:
+ *                type: string
+ *                default: NGO's image
+ *              mission: 
+ *                type: string
+ *                default: NGO's password again
+ *              email:
+ *                type: string
+ *                default: NGO's email
+ *              phonenumber:
+ *                type: number
+ *                default: NGO's contact no
+ *     responses:
+ *      201:
+ *        description: Created
+ *      409:
+ *        description: Conflict
+ *      404:
+ *        description: Not Found
+ */
 
 router.post('/upload', (req, res) => {
     upload(req, res,  async (err) => {
@@ -78,6 +124,51 @@ router.post('/upload', (req, res) => {
 })
 
 
+/**
+ * @openapi
+ * '/ngo/donate':
+ *  post:
+ *     tags:
+ *     - NGO
+ *     summary: NGO Details
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *            type: object
+ *            required:
+ *              - name
+ *              - orgName
+ *              - image
+ *              - detail
+ *              - category
+ *            properties:
+ *              name: 
+ *                type: string
+ *                default: Name
+ *              orgName:
+ *                type: string
+ *                default: Organization's name
+ *              image:
+ *                type: string
+ *                default: Organization's image
+ *              detail: 
+ *                type: string
+ *                default: Organization's detail
+ *              category:
+ *                type: string
+ *                default: Organization's category
+ *     responses:
+ *      201:
+ *        description: Created
+ *      409:
+ *        description: Conflict
+ *      404:
+ *        description: Not Found
+ */
+
+
 router.post('/donate', (req, res) => {
     upload(req, res, (err) => {
         if(err) {
@@ -97,6 +188,18 @@ router.post('/donate', (req, res) => {
     })
 })
 
+/**
+ * @openapi
+ * ngo/getDetails:
+ *  get:
+ *     summary: Find all NGO Details
+ *     tags:
+ *     - NGO
+ *     description: Returns all NGO details
+ *     responses:
+ *       200:
+ *         description: API is  running
+ */
 router.get('/getDetails', (req, res) => {
     ImageModel.find({}, (err, results) => {
         if(err) {
@@ -106,6 +209,18 @@ router.get('/getDetails', (req, res) => {
         }
     })
 })
+/**
+ * @openapi
+ * ngo/getDetailInfo/name:
+ *  get:
+ *     summary: Find NGO Details by Name
+ *     tags:
+ *     - NGO
+ *     description: Returns all NGO details with the name
+ *     responses:
+ *       200:
+ *         description: API is  running
+ */
 router.get('/getDetailInfo', (req, res) => {
     // console.log(req.query);
     ImageModel.find({name:req.query.name}, (err, results) => {
@@ -116,6 +231,19 @@ router.get('/getDetailInfo', (req, res) => {
         }
     })
 })
+
+/**
+ * @openapi
+ * ngo/getDetailSector/tag:
+ *  get:
+ *     summary: Find NGO Details by tag (their sector)
+ *     tags:
+ *     - NGO
+ *     description: Returns all NGO details with the tag (their sector)
+ *     responses:
+ *       200:
+ *         description: API is  running
+ */
 router.get('/getDetailSector', (req, res) => {
     // console.log(req.query);
     ImageModel.find({tag:req.query.tag}, (err, results) => {
@@ -126,7 +254,18 @@ router.get('/getDetailSector', (req, res) => {
         }
     })
 })
-
+/**
+ * @openapi
+ * ngo/getDonations:
+ *  get:
+ *     summary: Find a list of the people who donated
+ *     tags:
+ *     - NGO
+ *     description: Returns all the people that donated
+ *     responses:
+ *       200:
+ *         description: API is  running
+ */
 router.get('/getDonations', (req, res) => {
     DonationModel.find({}, (err, results) => {
         if(err) {

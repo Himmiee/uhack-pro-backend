@@ -11,7 +11,9 @@
     "multer-storage-cloudinary": "^4.0.0",
     "nodemon": "^2.0.20",
     "sharp": "^0.31.3",
-    "sharp-multer": "^0.2.5"
+    "sharp-multer": "^0.2.5",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.0"
   },
   "name": "userdetails",
   "version": "1.0.0",
