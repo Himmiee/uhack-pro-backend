@@ -1,12 +1,14 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const router = express.Router();
+// const { CloudinaryStorage } = require("multer-storage-cloudinary")
 const dotenv = require('dotenv');
+const cloudinary = require("../utils/cloudinary")
 
 dotenv.config()
 
 const multer = require('multer');
-// let uri = "mongodb+srv://haliyah:haliyah@cluster0.9ekj33o.mongodb.net/?retryWrites=true&w=majority"
+
 
 const ImageModel = require('../models/image-models')
 const DonationModel = require('../models/donation-models')
@@ -16,8 +18,8 @@ const uri = process.env.URI_NAME
 console.log(uri);
 
 mongoose.connect(
-    // 'mongodb://127.0.0.1:27017/konectdb', 
-    "mongodb+srv://haliyah:haliyah@cluster0.9ekj33o.mongodb.net/?retryWrites=true&w=majority",
+
+    uri,
     {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -31,6 +33,12 @@ const Storage  = multer.diskStorage({
         cb(null, file.originalname);
     },
 })
+// const Storage = new CloudinaryStorage({
+//     cloudinary: cloudinary,
+//     params: {
+//       folder: "uploads",
+//     },
+//   });
 
 
 const upload = multer({
@@ -42,16 +50,19 @@ router.get('/', (req, res) => {
 })
 
 router.post('/upload', (req, res) => {
-    upload(req, res, (err) => {
+    upload(req, res,  async (err) => {
+     try {
         if(err) {
             console.log(err);
         } else {
+
+            const result = await cloudinary.uploader.upload(req.file.path)
+
             const newImage = new ImageModel({
             name: req.body.name,
-            // logo: { data: req.body.filename, contentType: 'image/png'},
             category:req.body.category,
             tag: req.body.tag,
-            image: { data: req.file.filename, contentType: 'image/png'},
+            image: { data: result.secure_url, contentType: 'image/png'},
             mission: req.body.mission,
             email: req.body.email,
             phonenumber: req.body.phonenumber
@@ -60,7 +71,10 @@ router.post('/upload', (req, res) => {
             .then(() => res.send("sucessfully uploaded"))
             .catch(err => console.log(err));
         }
-    })
+     } catch (err) {
+        console.log(err);
+    }}
+    )
 })
 
 

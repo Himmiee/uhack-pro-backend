@@ -5,7 +5,7 @@ const ImageSchema = mongoose.Schema({
     // logo: { data: Buffer, contentType: String },
     category: { type: String },
     tag: { type: String },
-    image: { data: Buffer, contentType: String },
+    image: { data: String, contentType: String },
     mission: { type: String },
     email: { type: String },
     phonenumber: { type: Number }
