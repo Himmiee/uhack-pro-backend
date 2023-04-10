@@ -17,7 +17,7 @@ const options = {
         },
         servers: [
             {
-                url: "http://localhost:3050"
+                url: "http://localhost:3060"
             }
         ]
     },
@@ -27,7 +27,7 @@ const options = {
 
 const specs = swaggerDoc(options)
 const app = express();
-const port = process.env.PORT || '3050';
+const port = process.env.PORT || '3060';
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs))
 app.use(bodyParser.urlencoded({ extended : true }));

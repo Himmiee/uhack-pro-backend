@@ -299,7 +299,7 @@ router.post('/addMessage', (req, res) => {
  *              gender: 
  *                type: string
  *                default: User's gender
-*              postalCode: 
+ *              postalCode: 
  *                type: string
  *                default: User's Postal code
  *              reason:
